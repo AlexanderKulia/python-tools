@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "python-deps"
+name = "python-tools"
 version = "0.1.0"
 description = ""
 authors = ["AlexanderKulia <kaaprivateproperty@gmail.com>"]

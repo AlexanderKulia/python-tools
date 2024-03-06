@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from python_deps.packages.c.cfile import Cfile
+from python_tools.packages.c.cfile import Cfile
 
 
 @dataclass
