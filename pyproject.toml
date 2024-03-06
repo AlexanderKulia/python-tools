@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "python-deps"
+version = "0.1.0"
+description = ""
+authors = ["AlexanderKulia <kaaprivateproperty@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+astroid = "^3.1.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
