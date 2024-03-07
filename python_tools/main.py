@@ -1,5 +1,6 @@
 import ast
 import logging
+import sys
 from pathlib import Path
 
 logging.basicConfig()
@@ -50,7 +51,12 @@ if __name__ == "__main__":
     map = generate_deps(root_path, {})
     print(map)
 
+    is_success = True
+
     for path, deps in map.items():
         for dep in deps:
             if "/libs/" in path and "packages" in dep:
                 logger.warning(f"Path {path} should not import {dep}")
+                is_success = False
+
+    sys.exit(1)
