@@ -57,4 +57,5 @@ if __name__ == "__main__":
                 logger.warning(f"Path {path} should not import {dep}")
                 is_success = False
 
-    sys.exit(1)
+    if not is_success:
+        sys.exit(1)
