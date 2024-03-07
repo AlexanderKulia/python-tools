@@ -49,8 +49,6 @@ def should_skip_file(file_name: str) -> bool:
 if __name__ == "__main__":
     root_path = Path(".").resolve()
     map = generate_deps(root_path, {})
-    print(map)
-
     is_success = True
 
     for path, deps in map.items():
