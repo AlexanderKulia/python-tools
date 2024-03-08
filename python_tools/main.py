@@ -1,4 +1,5 @@
 import ast
+import json
 import logging
 import sys
 from collections import defaultdict
@@ -109,11 +110,11 @@ if __name__ == "__main__":
         stats.statement_count * max_allowed_statement_percent_per_file
     )
 
-    component_map: dict[Path, int] = defaultdict(int)
+    component_map: dict[str, int] = defaultdict(int)
 
     for stat in stats.file_counters:
         component_name = stat.file_path.parent
-        component_map[component_name] += stat.statement_count
+        component_map[str(component_name)] += stat.statement_count
 
         for import_ in stat.imports:
             if "/libs/" in str(stat.file_path) and "packages" in import_:
@@ -146,7 +147,8 @@ if __name__ == "__main__":
             )
             is_success = False
 
-    print(component_map)
+    with open("components.json", "w") as f:
+        json.dump(component_map, f)
 
     if not is_success:
         sys.exit(1)
