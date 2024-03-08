@@ -137,6 +137,9 @@ if __name__ == "__main__":
 
     std_dev = (square_diff_sum / (component_count - 1)) ** 0.5
 
+    leaf_nodes: set[str] = set()
+    common_components: set[str] = set()
+
     for component_path, statement_count in component_map.items():
         diff_from_mean = abs(statement_count - component_statement_mean)
         std_dev_count = diff_from_mean / std_dev
@@ -146,6 +149,15 @@ if __name__ == "__main__":
                 f"Path {stat.file_path} is an outlier with {std_dev_count} standard deviations from the mean"
             )
             is_success = False
+
+        leaf_name = Path(component_path).name
+        if leaf_name in leaf_nodes:
+            common_components.add(component_path)
+        else:
+            leaf_nodes.add(leaf_name)
+
+    if len(common_components) > 0:
+        logger.warning(f"There are common component names {common_components}")
 
     with open("components.json", "w") as f:
         json.dump(component_map, f)
