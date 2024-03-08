@@ -108,7 +108,14 @@ if __name__ == "__main__":
         stats.statement_count * max_allowed_statement_percent_per_file
     )
 
+    square_diff_sum = 0
+    file_count = len(stats.file_counters)
+    statement_mean = stats.statement_count / file_count
+
     for stat in stats.file_counters:
+        diff = stat.statement_count - statement_mean
+        square_diff_sum += diff**2
+
         for import_ in stat.imports:
             if "/libs/" in str(stat.file_path) and "packages" in import_:
                 logger.warning(f"Path {stat.file_path} should not import {import_}")
@@ -118,6 +125,18 @@ if __name__ == "__main__":
             logger.warning(
                 f"Path {stat.file_path} has {round(stat.statement_count)} statements. Maximim allowed statement count per file is {max_allowed_statement_count_per_file}"
             )
+
+    std_dev = (square_diff_sum / (file_count - 1)) ** 0.5
+
+    for stat in stats.file_counters:
+        diff_from_mean = abs(stat.statement_count - statement_mean)
+        std_dev_count = diff_from_mean / std_dev
+
+        if std_dev_count > 3:
+            logger.warning(
+                f"Path {stat.file_path} is an outlier with {std_dev_count} standard deviations from the mean"
+            )
+            is_success = False
 
     if not is_success:
         sys.exit(1)
