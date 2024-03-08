@@ -174,6 +174,7 @@ if __name__ == "__main__":
 
     seen_files: set[str] = set()
     common_files: set[str] = set()
+    files_in_root: set[str] = set()
 
     for component_stat in stats.component_counters:
         for file_stat in component_stat.file_counters:
@@ -182,6 +183,14 @@ if __name__ == "__main__":
                 common_files.add(file_name)
             else:
                 seen_files.add(file_name)
+
+            file_is_in_root = False
+            for cstat in stats.component_counters:
+                if str(component_stat.component_path) in str(cstat.component_path):
+                    file_is_in_root = True
+
+        if file_is_in_root:
+            logger.warning(f"File {file_stat.file_path} resides in root namespace")
 
     if len(common_files) > 0:
         logger.warning(f"There are common file names {common_files}")
