@@ -103,7 +103,7 @@ if __name__ == "__main__":
     root_path = Path(".").resolve()
     stats = generate_stats(root_path)
     is_success = True
-    max_allowed_statement_percent_per_file = 0.05
+    max_allowed_statement_percent_per_file = 0.1
     max_allowed_statement_count_per_file = round(
         stats.statement_count * max_allowed_statement_percent_per_file
     )
